@@ -42,7 +42,7 @@ class DryCleaning
     else
       dif = finish_time - (@closing_hour*60*60)
     # add dif to the opening hour
-    dif += 8*60*60
+    dif += @opening_hour*60*60
     # add a day to dif
     dif += one_day
     end
@@ -50,7 +50,7 @@ class DryCleaning
 
 end
 
-=begin
-cleaner = DryCleaning.new
-print cleaner.pickup_time 60
-=end
+
+cleaner = DryCleaning.new 12, 18
+print cleaner.pickup_time 120
+
