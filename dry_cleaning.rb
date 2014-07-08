@@ -21,9 +21,9 @@ class DryCleaning
     # check if the clothes are ready today
     finish_time = t + cleaning_time
     if finish_in_schedule?(finish_time)
-      return finish_time
+      finish_time
     else
-      return next_day(t) + remaining(t, cleaning_time)
+      next_day(t) + remaining(t, cleaning_time)
     end
   end
   
@@ -31,9 +31,9 @@ class DryCleaning
   # return nil if the order was placed during schedule
   def check_if_in_schedule(t, cleaning_time)
     if t.hour >= @closing_hour
-      return next_day(t) + cleaning_time
+      next_day(t) + cleaning_time
     elsif t.hour < @opening_hour
-      return Time.mktime(t.year,t.month,t.day,@opening_hour) + cleaning_time
+      Time.mktime(t.year,t.month,t.day,@opening_hour) + cleaning_time
     else
       nil
     end
@@ -57,9 +57,9 @@ class DryCleaning
     
     # switch to next day
     if t.friday?
-      return t += 3 * one_day
+      t += 3 * one_day
     else
-      return t += one_day
+      t += one_day
     end
   end
   
