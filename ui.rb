@@ -31,7 +31,7 @@ class Ui
       print "Error! You can't open after closing hour!!"
     elsif !v.pickupValid(@pick)
       print "Error! check pickup time"
-    elsif v.isClosed(@closeHour,Time.new.hour)
+    elsif v.isClosed(@closeHour,Time.new.hour,Time.new.min)
       print "Is closed"
     else true
     end

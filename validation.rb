@@ -13,8 +13,8 @@ class Validator
     close>current+pickup
   end
   
-  def isClosed(close, current)
-    close < current
+  def isClosed(close, current,minCurrent)
+    close*60< current*60+minCurrent
   end
 
 end
