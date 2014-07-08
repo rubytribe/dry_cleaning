@@ -67,7 +67,7 @@ class DryCleaning
   # return the remaining time for cleaning the next day
   def remaining(t, cleaning_time)
     # subtract from the total cleaning time the time already worked today (the difference
-    # between the closing hour and the current time
+    # between the closing hour and the current time)
     cleaning_time - (@closing_hour*60*60 - seconds(t))
   end
    
