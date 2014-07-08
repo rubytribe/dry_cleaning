@@ -1,31 +1,33 @@
+
 class DryClean
+	
 	private
-	$currentTime 
+	@currentTime 
 	private
-	$deliveryTime 
+	@deliveryTime 
 
 	#for testing
-	def self.setDryClean(sTime)
-		$currentTime = sTime
-		$deliveryTime = sTime
+	def $dry.setDryClean(sTime)
+		@currentTime = sTime
+		@deliveryTime = sTime
 	end
 
-	def self.startDryClean
-		$currentTime = Time.new
-		$deliveryTime = $currentTime
+	def $dry.startDryClean
+		@currentTime = Time.new
+		@deliveryTime = @currentTime
 	end
 	#mon - fri 10 - 18
-	def self.getOrder
-		if isOpen($currentTime)
+	def $dry.getOrder
+		if isOpen(@currentTime)
 			placeOrder
 		else
 			puts "closed"
 			exit
 		end
-		return $deliveryTime
+		return @deliveryTime
 	end
 
-	def self.isOpen(time)
+	def $dry.isOpen(time)
 		if time.sunday? or time.saturday?
 			return false
 		end
@@ -39,111 +41,111 @@ class DryClean
 
 
 	private
-	def self.placeOrder
-		eod = $deliveryTime
-		eod = Time.mktime($deliveryTime.year, $deliveryTime.month, $deliveryTime.day, 18, 0, 0)
+	def $dry.placeOrder
+		eod = @deliveryTime
+		eod = Time.mktime(@deliveryTime.year, @deliveryTime.month, @deliveryTime.day, 18, 0, 0)
 		order = 2*3600
 		
-		if($deliveryTime + order > eod)
-			order -= (eod - $deliveryTime)
+		if(@deliveryTime + order > eod)
+			order -= (eod - @deliveryTime)
 			nextDay	
 		end
-		$deliveryTime += order
+		@deliveryTime += order
 
 	end
 
 	private
-	def self.nextDay
-		if $deliveryTime.friday?
-			$deliveryTime += 3 * 24 * 3600
-			$deliveryTime = Time.mktime($deliveryTime.year, $deliveryTime.month, $deliveryTime.day, 10, 0, 0)
+	def $dry.nextDay
+		if @deliveryTime.friday?
+			@deliveryTime += 3 * 24 * 3600
+			@deliveryTime = Time.mktime(@deliveryTime.year, @deliveryTime.month, @deliveryTime.day, 10, 0, 0)
 		else
-			$deliveryTime += 1 * 24 * 3600
-			$deliveryTime = Time.mktime($deliveryTime.year, $deliveryTime.month, $deliveryTime.day, 10, 0, 0)
+			@deliveryTime += 1 * 24 * 3600
+			@deliveryTime = Time.mktime(@deliveryTime.year, @deliveryTime.month, @deliveryTime.day, 10, 0, 0)
 		end
 		
 	end
 
-	def self.passHours(nrHours) #for testing
+	def $dry.passHours(nrHours) #for testing
 		if nrHours > 0
-			$currentTime += nrHours 
+			@currentTime += nrHours 
 		end
-		if $deliveryTime < $currentTime
-			$deliveryTime = $currentTime
+		if @deliveryTime < @currentTime
+			@deliveryTime = @currentTime
 		end
 		
 	end
 
-	def self.getDeliveryTime
-		return $deliveryTime
+	def $dry.getDeliveryTime
+		return @deliveryTime
 	end
 
-	def self.getCurrentTime
-		return $currentTime
+	def $dry.getCurrentTime
+		return @currentTime
 	end
 end
 
 
 
 
-#DryClean.startDryClean
-#DryClean.passHours(3 * 24 * 60 * 60 + 8 * 60 * 60)
-#puts DryClean.getOrder
+#$dry.startDryClean
+#$dry.passHours(3 * 24 * 60 * 60 + 8 * 60 * 60)
+#puts $dry.getOrder
 
 class Test
-	def self.testMonday
+	def $dry.testMonday
 		#before 16
-		DryClean.setDryClean(Time.mktime(2014, 7, 14, 13, 23, 0))
-		puts "Client on monday. \n	Arriving time: #{DryClean.getCurrentTime}"
-		DryClean.getOrder
-		puts "	Please come back at #{DryClean.getDeliveryTime}"
+		$dry.setDryClean(Time.mktime(2014, 7, 14, 13, 23, 0))
+		puts "Client on monday. \n	Arriving time: #{$dry.getCurrentTime}"
+		$dry.getOrder
+		puts "	Please come back at #{$dry.getDeliveryTime}"
 
 		#after 16
-		DryClean.passHours(4 * 60 * 60)
-		puts "Client on monday. \n	Arriving time: #{DryClean.getCurrentTime}"
-		DryClean.getOrder
-		puts "	Please come back at #{DryClean.getDeliveryTime}"
+		$dry.passHours(4 * 60 * 60)
+		puts "Client on monday. \n	Arriving time: #{$dry.getCurrentTime}"
+		$dry.getOrder
+		puts "	Please come back at #{$dry.getDeliveryTime}"
 	end
 
-	def self.testFriday
+	def $dry.testFriday
 		#before 16
-		DryClean.setDryClean(Time.mktime(2014, 7, 18, 13, 23, 0))
-		puts "Client on friday. \n	Arriving time: #{DryClean.getCurrentTime}"
-		DryClean.getOrder
-		puts "	Please come back at #{DryClean.getDeliveryTime}"
+		$dry.setDryClean(Time.mktime(2014, 7, 18, 13, 23, 0))
+		puts "Client on friday. \n	Arriving time: #{$dry.getCurrentTime}"
+		$dry.getOrder
+		puts "	Please come back at #{$dry.getDeliveryTime}"
 
-		puts "Client on friday. \n	Arriving time: #{DryClean.getCurrentTime}"
-		DryClean.getOrder
-		puts "	Please come back at #{DryClean.getDeliveryTime}"
+		puts "Client on friday. \n	Arriving time: #{$dry.getCurrentTime}"
+		$dry.getOrder
+		puts "	Please come back at #{$dry.getDeliveryTime}"
 
-		puts "Client on friday. \n	Arriving time: #{DryClean.getCurrentTime}"
-		DryClean.getOrder
-		puts "	Please come back at #{DryClean.getDeliveryTime}"
+		puts "Client on friday. \n	Arriving time: #{$dry.getCurrentTime}"
+		$dry.getOrder
+		puts "	Please come back at #{$dry.getDeliveryTime}"
 
-		puts "Client on friday. \n	Arriving time: #{DryClean.getCurrentTime}"
-		DryClean.getOrder
-		puts "	Please come back at #{DryClean.getDeliveryTime}"
+		puts "Client on friday. \n	Arriving time: #{$dry.getCurrentTime}"
+		$dry.getOrder
+		puts "	Please come back at #{$dry.getDeliveryTime}"
 
-		puts "Client on friday. \n	Arriving time: #{DryClean.getCurrentTime}"
-		DryClean.getOrder
-		puts "	Please come back at #{DryClean.getDeliveryTime}"
+		puts "Client on friday. \n	Arriving time: #{$dry.getCurrentTime}"
+		$dry.getOrder
+		puts "	Please come back at #{$dry.getDeliveryTime}"
 
-		DryClean.passHours(3 * 24 * 60 * 60)
+		$dry.passHours(3 * 24 * 60 * 60)
 
 		
-		puts "Client on friday. \n	Arriving time: #{DryClean.getCurrentTime}"
-		DryClean.getOrder
-		puts "	Please come back at #{DryClean.getDeliveryTime}"
+		puts "Client on friday. \n	Arriving time: #{$dry.getCurrentTime}"
+		$dry.getOrder
+		puts "	Please come back at #{$dry.getDeliveryTime}"
 	end
 
-	def self.testSunday
-		DryClean.setDryClean(Time.mktime(2014, 7, 20, 13, 23, 0))
-		puts "Client on sunday. \n	Arriving time: #{DryClean.getCurrentTime}"
-		DryClean.getOrder
+	def $dry.testSunday
+		$dry.setDryClean(Time.mktime(2014, 7, 20, 13, 23, 0))
+		puts "Client on sunday. \n	Arriving time: #{$dry.getCurrentTime}"
+		$dry.getOrder
 	end
 
 end
-
-Test.testMonday
-Test.testFriday
-Test.testSunday
+@dry = DryClean.new
+$dry.testMonday
+$dry.testFriday
+$dry.testSunday
