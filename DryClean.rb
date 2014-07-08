@@ -16,6 +16,7 @@ class Order
     #@currentDay=time1.wday #current day 0-Sunday, 1-Monday...
     @isWeekend=time1.saturday? or time1.sunday?
     @currentHour
+    
   end
 
   def toString
@@ -27,9 +28,19 @@ class Order
   end
 
   def calculate(day)
-    if day
+    if Time.new.friday?
+      @minutes=(@currentMinute+(@open*60+(@pickup-(@close*60-@currentHour*60)))%60)
+      @hours=(@open*60+(@pickup-(@close*60-@currentHour*60)))/60
+      
+      if @minutes>=60
+        @minutes-=60
+        @hours+=1
+      end
+      return @hours,@minutes,"On Monday"
+    
+    elsif day
       @hour=(@currentHour*60+@pickup)/60
-      @minutes=@currentMinute*(@currentHour*60+@pickup)%60
+      @minutes=@currentMinute+((@currentHour*60+@pickup)%60)
       if @minutes>=60
         @minutes-=60
         @hours+=1
