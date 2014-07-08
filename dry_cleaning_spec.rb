@@ -10,12 +10,20 @@ describe DryCleaning do
     expect(@cleaner.pickup_time).to eq(Time.mktime(2014,7,7,14))
   end
   
-  specify 'when pick up time is tomorrow' do
-    Time.stub(:now).and_return(Time.mktime(2014,7,7,15))
-    expect(@cleaner.pickup_time).to eq(Time.mktime(2014,7,8,9))
+  context 'when pickup time is the next day' do
+    specify 'Monday' do
+      Time.stub(:now).and_return(Time.mktime(2014,7,7,15))
+      expect(@cleaner.pickup_time).to eq(Time.mktime(2014,7,8,9))
+    end
+    
+    specify 'Friday' do
+      Time.stub(:now).and_return(Time.mktime(2014,7,11,15))
+      expect(@cleaner.pickup_time).to eq(Time.mktime(2014,7,14,9))
+    end
+    
   end
   
-  it 'should change to next month in the last day of month' do
+  it 'should change to next month in the last day of the month' do
     Time.stub(:now).and_return(Time.mktime(2014,7,31,15))
     expect(@cleaner.pickup_time).to eq(Time.mktime(2014,8,1,9))
   end
