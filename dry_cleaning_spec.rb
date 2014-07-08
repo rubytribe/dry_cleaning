@@ -33,15 +33,14 @@ describe DryCleaning do
     expect(@cleaner.pickup_time).to eq(Time.mktime(2015,1,1,9))
   end
   
-  context 'when clothes are brought after the end of the program' do
-    it 'should add the cleaning time to the opening hour tomorrow' do
+    
+  context 'order delivered outside of working hours' do  
+    specify 'after the end of the program' do
       Time.stub(:now).and_return(Time.mktime(2014,7,7,17))
       expect(@cleaner.pickup_time).to eq(Time.mktime(2014,7,8,10))
     end
-  end
   
-  context 'when clothes are brought before the program starts' do
-    it 'should add the cleaning time to the opening hour today' do
+    specify 'before the start of the program' do
       Time.stub(:now).and_return(Time.mktime(2014,7,7,7))
       expect(@cleaner.pickup_time).to eq(Time.mktime(2014,7,7,10))
     end
