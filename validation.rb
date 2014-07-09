@@ -1,4 +1,4 @@
-puts "validation included"
+#puts "validation included"
 
 class Validator
   def openCloseValid(open,close)
