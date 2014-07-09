@@ -52,7 +52,7 @@ class DryClean
 
 		if time.hour < 10 or time.hour > 18
 			return false
-		end
+		 end
 
 		return true
 	end
@@ -84,6 +84,3 @@ class DryClean
 		
 	end
 end
-
-
-
