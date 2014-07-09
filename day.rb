@@ -1,11 +1,11 @@
 class Day
-  attr_accessor :open, :close, :working
+  attr_accessor :start_time, :end_time, :working
   
-  # reuqires a boolean for working
-  def initialize(working, open = nil, close = nil)
+  # working requires a boolean
+  def initialize(working, start_time = nil, end_time = nil)
     @working = working
-    @open = open
-    @close = close
+    @start_time = start_time
+    @end_time = end_time
   end
   
 end

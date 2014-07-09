@@ -2,7 +2,7 @@ require_relative 'day'
 
 class DryCleaning
   
-  def initialize(open = 8, close = 16)
+  def initialize(start_time = 8, end_time = 16)
     # each day of the week is represented from 0 to 6 starting with Sunday
     @working_hours = []
     # Saturday and Sunday is closed 
@@ -10,7 +10,7 @@ class DryCleaning
     @working_hours[6] = Day.new(false)
     
     for n in (1..5)
-      @working_hours[n] = Day.new(true, open, close)
+      @working_hours[n] = Day.new(true, start_time, end_time)
     end
   end
   
@@ -40,21 +40,21 @@ class DryCleaning
   end
   
   # takes argument the number of the day, open and close time
-  def set_schedule(n, open, close)
+  def set_schedule(n, start_time, end_time)
     day = @working_hours[n]
-    day.open = open
-    day.close = close
+    day.start_time = start_time
+    day.end_time = end_time
   end
   
   # set the schedule for entire week
-  def set_week_schedule(open, close)
-    initialize(open, close)
+  def set_week_schedule(start_time, end_time)
+    initialize(start_time, end_time)
   end
   
   def print_schedule
     days_of_week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     @working_hours.each_with_index do |day, i|
-      puts(days_of_week[i] + ': ' + day.open.to_s + ' - ' + day.close.to_s) if day.working
+      puts(days_of_week[i] + ': ' + day.start_time.to_s + ' - ' + day.end_time.to_s) if day.working
     end
   end
   
@@ -63,11 +63,11 @@ class DryCleaning
   private
   
     def opening_hour(t)
-    @working_hours[t.wday].open
+    @working_hours[t.wday].start_time
   end
   
   def closing_hour(t)
-    @working_hours[t.wday].close
+    @working_hours[t.wday].end_time
   end
   
   
