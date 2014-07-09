@@ -46,4 +46,24 @@ describe DryCleaning do
     end
   end
   
+  it 'should be a able to remove a working day' do
+    @cleaner.remove_working_day(3)
+    Time.stub(:now).and_return(Time.mktime(2014,7,8,15))
+    expect(@cleaner.pickup_time).to eq(Time.mktime(2014,7,10,9))
+  end
+  
+  context 'should be able to change the program only for a specific day' do
+    specify 'start late' do
+      @cleaner.set_schedule(3, 12, 16)
+      Time.stub(:now).and_return(Time.mktime(2014,7,8,15))
+      expect(@cleaner.pickup_time).to eq(Time.mktime(2014,7,9,13))
+    end
+    
+    specify 'finish early' do
+      @cleaner.set_schedule(3,8,12)
+      Time.stub(:now).and_return(Time.mktime(2014,7,9,11))
+      expect(@cleaner.pickup_time).to eq(Time.mktime(2014,7,10,9))
+    end
+  end
+  
 end
