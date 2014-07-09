@@ -4,13 +4,13 @@ class DryCleaning
   
   def initialize(start_time = 8, end_time = 16)
     # each day of the week is represented from 0 to 6 starting with Sunday
-    @working_hours = []
+    @days = []
     # Saturday and Sunday is closed 
-    @working_hours[0] = Day.new(false)
-    @working_hours[6] = Day.new(false)
+    @days[0] = Day.new(false)
+    @days[6] = Day.new(false)
     
     for n in (1..5)
-      @working_hours[n] = Day.new(true, start_time, end_time)
+      @days[n] = Day.new(true, start_time, end_time)
     end
   end
   
@@ -36,12 +36,12 @@ class DryCleaning
   
   
   def remove_working_day(n)
-    @working_hours[n] = Day.new(false)
+    @days[n] = Day.new(false)
   end
   
   # takes argument the number of the day, open and close time
   def set_schedule(n, start_time, end_time)
-    day = @working_hours[n]
+    day = @days[n]
     day.start_time = start_time
     day.end_time = end_time
   end
@@ -53,7 +53,7 @@ class DryCleaning
   
   def print_schedule
     days_of_week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-    @working_hours.each_with_index do |day, i|
+    @days.each_with_index do |day, i|
       puts(days_of_week[i] + ': ' + day.start_time.to_s + ' - ' + day.end_time.to_s) if day.working
     end
   end
@@ -63,11 +63,11 @@ class DryCleaning
   private
   
     def opening_hour(t)
-    @working_hours[t.wday].start_time
+    @days[t.wday].start_time
   end
   
   def closing_hour(t)
-    @working_hours[t.wday].end_time
+    @days[t.wday].end_time
   end
   
   
@@ -101,7 +101,7 @@ class DryCleaning
     one_day = 24*60*60
     
     t += one_day
-    while(not @working_hours[t.wday].working)
+    while(not @days[t.wday].working)
       t += one_day
     end
     # set t to the opening hour
