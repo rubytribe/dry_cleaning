@@ -15,7 +15,7 @@ class DryCleaning
     cleaning_time *= 60
     
     # check if the clothes were delivered outside of schedule
-    outside_schedule = check_if_in_schedule(t, cleaning_time)
+    outside_schedule = check_if_outside_schedule(t, cleaning_time)
     return outside_schedule if outside_schedule 
     
     # check if the clothes are ready today
@@ -29,7 +29,7 @@ class DryCleaning
   
   # return the date and time for an order delivered outside of schedule
   # return nil if the order was placed during schedule
-  def check_if_in_schedule(t, cleaning_time)
+  def check_if_outside_schedule(t, cleaning_time)
     if t.hour >= @closing_hour
       next_day(t) + cleaning_time
     elsif t.hour < @opening_hour
@@ -73,8 +73,7 @@ class DryCleaning
    
   # get the time in seconds
   def seconds(t)
-    result = 0
-    result += t.hour * 60 * 60
+    result = t.hour * 60 * 60
     result += t.min * 60
     result += t.sec
   end
