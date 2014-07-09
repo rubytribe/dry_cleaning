@@ -1,33 +1,51 @@
 
 class DryClean
+	private
+	attr_accessor :current_time, :delivery_time, :service_time
 	
-	private
-	@currentTime 
-	private
-	@deliveryTime 
-
-	#for testing
-	def $dry.setDryClean(sTime)
-		@currentTime = sTime
-		@deliveryTime = sTime
+	public
+	def initialize(current_time, service_time)
+		@current_time = current_time
+		@delivery_time = current_time
+		if service_time < 30 * 60  
+			puts "Minimum service time is 30 minutes"
+			@service_time = 30 * 60
+		elsif service_time > 120 * 60
+			puts "Maximum service time is 2 hours"
+			@service_time = 120 * 60
+		else
+			@service_time = service_time
+		end
 	end
 
-	def $dry.startDryClean
-		@currentTime = Time.new
-		@deliveryTime = @currentTime
-	end
-	#mon - fri 10 - 18
-	def $dry.getOrder
-		if isOpen(@currentTime)
-			placeOrder
+
+	
+	# schedule: mon - fri 10 - 18
+	def get_order
+		if is_open(@current_time)
+			place_order
 		else
 			puts "closed"
 			exit
 		end
-		return @deliveryTime
+		return @delivery_time
 	end
 
-	def $dry.isOpen(time)
+
+	def get_delivery_time
+		return @delivery_time
+	end
+
+	def get_current_time
+		return @current_time
+	end
+
+	def get_service_time
+		return @service_time
+	end
+
+	private
+	def is_open(time)
 		if time.sunday? or time.saturday?
 			return false
 		end
@@ -40,112 +58,32 @@ class DryClean
 	end
 
 
-	private
-	def $dry.placeOrder
-		eod = @deliveryTime
-		eod = Time.mktime(@deliveryTime.year, @deliveryTime.month, @deliveryTime.day, 18, 0, 0)
-		order = 2*3600
-		
-		if(@deliveryTime + order > eod)
-			order -= (eod - @deliveryTime)
-			nextDay	
+	
+	def place_order
+		eod = Time.mktime(@delivery_time.year, @delivery_time.month, @delivery_time.day, 18, 0, 0) #end of the currrent day
+		order = @service_time
+
+		#checks if the order can be performed in the current day
+		if(@delivery_time + order > eod)
+			order -= (eod - @delivery_time)
+			next_day	
 		end
-		@deliveryTime += order
+		@delivery_time += order
 
 	end
 
-	private
-	def $dry.nextDay
-		if @deliveryTime.friday?
-			@deliveryTime += 3 * 24 * 3600
-			@deliveryTime = Time.mktime(@deliveryTime.year, @deliveryTime.month, @deliveryTime.day, 10, 0, 0)
+	#this method sets the delivery time to the next working day
+	def next_day
+		if @delivery_time.friday?
+			@delivery_time += 3 * 24 * 3600
+			@delivery_time = Time.mktime(@delivery_time.year, @delivery_time.month, @delivery_time.day, 10, 0, 0)
 		else
-			@deliveryTime += 1 * 24 * 3600
-			@deliveryTime = Time.mktime(@deliveryTime.year, @deliveryTime.month, @deliveryTime.day, 10, 0, 0)
+			@delivery_time += 1 * 24 * 3600
+			@delivery_time = Time.mktime(@delivery_time.year, @delivery_time.month, @delivery_time.day, 10, 0, 0)
 		end
 		
-	end
-
-	def $dry.passHours(nrHours) #for testing
-		if nrHours > 0
-			@currentTime += nrHours 
-		end
-		if @deliveryTime < @currentTime
-			@deliveryTime = @currentTime
-		end
-		
-	end
-
-	def $dry.getDeliveryTime
-		return @deliveryTime
-	end
-
-	def $dry.getCurrentTime
-		return @currentTime
 	end
 end
 
 
 
-
-#$dry.startDryClean
-#$dry.passHours(3 * 24 * 60 * 60 + 8 * 60 * 60)
-#puts $dry.getOrder
-
-class Test
-	def $dry.testMonday
-		#before 16
-		$dry.setDryClean(Time.mktime(2014, 7, 14, 13, 23, 0))
-		puts "Client on monday. \n	Arriving time: #{$dry.getCurrentTime}"
-		$dry.getOrder
-		puts "	Please come back at #{$dry.getDeliveryTime}"
-
-		#after 16
-		$dry.passHours(4 * 60 * 60)
-		puts "Client on monday. \n	Arriving time: #{$dry.getCurrentTime}"
-		$dry.getOrder
-		puts "	Please come back at #{$dry.getDeliveryTime}"
-	end
-
-	def $dry.testFriday
-		#before 16
-		$dry.setDryClean(Time.mktime(2014, 7, 18, 13, 23, 0))
-		puts "Client on friday. \n	Arriving time: #{$dry.getCurrentTime}"
-		$dry.getOrder
-		puts "	Please come back at #{$dry.getDeliveryTime}"
-
-		puts "Client on friday. \n	Arriving time: #{$dry.getCurrentTime}"
-		$dry.getOrder
-		puts "	Please come back at #{$dry.getDeliveryTime}"
-
-		puts "Client on friday. \n	Arriving time: #{$dry.getCurrentTime}"
-		$dry.getOrder
-		puts "	Please come back at #{$dry.getDeliveryTime}"
-
-		puts "Client on friday. \n	Arriving time: #{$dry.getCurrentTime}"
-		$dry.getOrder
-		puts "	Please come back at #{$dry.getDeliveryTime}"
-
-		puts "Client on friday. \n	Arriving time: #{$dry.getCurrentTime}"
-		$dry.getOrder
-		puts "	Please come back at #{$dry.getDeliveryTime}"
-
-		$dry.passHours(3 * 24 * 60 * 60)
-
-		
-		puts "Client on friday. \n	Arriving time: #{$dry.getCurrentTime}"
-		$dry.getOrder
-		puts "	Please come back at #{$dry.getDeliveryTime}"
-	end
-
-	def $dry.testSunday
-		$dry.setDryClean(Time.mktime(2014, 7, 20, 13, 23, 0))
-		puts "Client on sunday. \n	Arriving time: #{$dry.getCurrentTime}"
-		$dry.getOrder
-	end
-
-end
-@dry = DryClean.new
-$dry.testMonday
-$dry.testFriday
-$dry.testSunday
