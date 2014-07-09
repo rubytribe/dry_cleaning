@@ -22,12 +22,14 @@ class DryCleaning
     # get the cleaning time in seconds
     cleaning_time *= 60
     
-    # check if the clothes were delivered outside of schedule
-    outside_schedule = check_if_outside_schedule(t, cleaning_time)
-    return outside_schedule if outside_schedule
-    
+    # if the clothes were delivered outside of schedule
+    if t.hour >= closing_hour(t)
+      next_day(t) + cleaning_time
+    elsif t.hour < opening_hour(t)
+      Time.mktime(t.year,t.month,t.day,opening_hour(t)) + cleaning_time
+    # if the clothes are delivered during schedule
     # check if the clothes are ready today
-    if finish_in_schedule?(t, cleaning_time)
+    elsif finish_in_schedule?(t, cleaning_time)
       t + cleaning_time
     else
       next_day(t) + remaining(t, cleaning_time)
@@ -46,10 +48,6 @@ class DryCleaning
     day.end_time = end_time
   end
   
-  # set the schedule for entire week
-  def set_week_schedule(start_time, end_time)
-    initialize(start_time, end_time)
-  end
   
   def print_schedule
     days_of_week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -62,26 +60,14 @@ class DryCleaning
   
   private
   
-    def opening_hour(t)
+  def opening_hour(t)
     @days[t.wday].start_time
   end
   
   def closing_hour(t)
     @days[t.wday].end_time
   end
-  
-  
-  # return the date and time for an order delivered outside of schedule
-  # return nil if the order was placed during schedule
-  def check_if_outside_schedule(t, cleaning_time)
-    if t.hour >= closing_hour(t)
-      next_day(t) + cleaning_time
-    elsif t.hour < opening_hour(t)
-      Time.mktime(t.year,t.month,t.day,opening_hour(t)) + cleaning_time
-    else
-      nil
-    end
-  end
+
   
   def finish_in_schedule?(t, cleaning_time)
     finish_time = t + cleaning_time
@@ -127,6 +113,9 @@ end
 
 cleaning = DryCleaning.new
 cleaning.remove_working_day(4)
-cleaning.set_schedule(3,8,14)
+cleaning.set_schedule(3,8,17)
 cleaning.set_schedule(5,12,18)
 cleaning.print_schedule
+
+puts
+puts cleaning.pickup_time
