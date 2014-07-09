@@ -1,0 +1,25 @@
+[32m.[0m[31mF[0m
+
+Failures:
+
+  1) DryClean test monday at 17:00
+     [31mFailure/Error: expect(@dry.get_order).to eq(Time.mktime(2014, 7, 15, 11, 0, 0) + 120*60)[0m
+     [31m  [0m
+     [31m  expected: 2014-07-15 13:00:00.000000000 +0300[0m
+     [31m       got: 2014-07-15 11:00:00.000000000 +0300[0m
+     [31m  [0m
+     [31m  (compared using ==)[0m
+     [31m  [0m
+     [31m  Diff:[0m[0m
+     [31m  [0m[34m@@ -1,2 +1,2 @@[0m
+     [31m  [0m[31m-2014-07-15 13:00:00 +0300[0m
+     [31m  [0m[32m+2014-07-15 11:00:00 +0300[0m
+     [31m  [0m[0m
+     [36m# ./unit_test.rb:15:in `block (2 levels) in <top (required)>'[0m
+
+Finished in 0.00733 seconds (files took 0.30647 seconds to load)
+[31m2 examples, 1 failure[0m
+
+Failed examples:
+
+[31mrspec ./unit_test.rb:12[0m [36m# DryClean test monday at 17:00[0m

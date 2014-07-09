@@ -1,12 +1,10 @@
 
 class DryClean
-  private
-  attr_accessor :current_time, :delivery_time, :service_time
-  
-  public
-  def initialize(current_time, service_time)
-    @current_time = current_time
-    @delivery_time = current_time
+  attr_accessor :current_time, :delivery_time, :service_time, :opening_hour, :closing_hour
+
+  def initialize(service_time, opening_hour, closing_hour)
+    @current_time = Time.now
+    @delivery_time = @current_time
     if service_time < 30 * 60  
       puts "Minimum service time is 30 minutes"
       @service_time = 30 * 60
@@ -15,6 +13,14 @@ class DryClean
       @service_time = 120 * 60
     else
       @service_time = service_time
+    end
+
+    if (closing_hour > opening_hour) or (closing_hour < 24) or (opening_hour > 0)
+      @closing_hour = closing_hour
+      @opening_hour = opening_hour
+    else
+      puts "Closing hour must be higher than opening hour"
+      return nil
     end
   end
 
@@ -26,33 +32,22 @@ class DryClean
       place_order
     else
       puts "closed"
-      exit
+      return nil
     end
     return @delivery_time
-  end
-
-
-  def get_delivery_time
-    return @delivery_time
-  end
-
-  def get_current_time
-    return @current_time
-  end
-
-  def get_service_time
-    return @service_time
   end
 
   private
+  
   def is_open(time)
-    if time.sunday? or time.saturday?
+   if time.sunday? or time.saturday?
       return false
     end
 
-    if time.hour < 10 or time.hour > 18
+
+    if time.hour < @opening_hour or time.hour > @closing_hour
       return false
-     end
+    end
 
     return true
   end
@@ -60,7 +55,7 @@ class DryClean
 
   
   def place_order
-    eod = Time.mktime(@delivery_time.year, @delivery_time.month, @delivery_time.day, 18, 0, 0) #end of the currrent day
+    eod = Time.mktime(@delivery_time.year, @delivery_time.month, @delivery_time.day, @closing_hour, 0, 0) #end of the currrent day
     order = @service_time
 
     #checks if the order can be performed in the current day
@@ -76,10 +71,10 @@ class DryClean
   def next_day
     if @delivery_time.friday?
       @delivery_time += 3 * 24 * 3600
-      @delivery_time = Time.mktime(@delivery_time.year, @delivery_time.month, @delivery_time.day, 10, 0, 0)
+      @delivery_time = Time.mktime(@delivery_time.year, @delivery_time.month, @delivery_time.day, @opening_hour, 0, 0)
     else
       @delivery_time += 1 * 24 * 3600
-      @delivery_time = Time.mktime(@delivery_time.year, @delivery_time.month, @delivery_time.day, 10, 0, 0)
+      @delivery_time = Time.mktime(@delivery_time.year, @delivery_time.month, @delivery_time.day, @opening_hour, 0, 0)
     end
     
   end
