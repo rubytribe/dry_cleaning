@@ -164,6 +164,7 @@ class Ui
 
   def validation
     v=Validator.new
+<<<<<<< HEAD
     if !v.openCloseValid(@@openHour,@@closeHour)
       
       puts "Error! You can't open after closing hour!!".red
@@ -171,6 +172,14 @@ class Ui
       puts "Error! check pickup time".red
     elsif v.isClosed(@@closeHour,Time.new.hour)
       puts "Is closed".red
+=======
+    if !v.openCloseValid(@openHour,@closeHour)
+      print "Error! You can't open after closing hour!!"
+    elsif !v.pickupValid(@pick)
+      print "Error! check pickup time"
+    elsif v.isClosed(@closeHour,Time.new.hour,Time.new.min)
+      print "Is closed"
+>>>>>>> e3e0153eb1d6606829c686c00278849039cf3088
     else true
     end
   end
