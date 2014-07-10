@@ -27,7 +27,8 @@ class DryCleaning
       next_day(t) + cleaning_time
     elsif t.hour < opening_hour(t)
       Time.mktime(t.year,t.month,t.day,opening_hour(t)) + cleaning_time
-    # if the clothes are delivered during schedule
+      
+    # if the clothes were delivered during schedule
     # check if the clothes are ready today
     elsif finish_in_schedule?(t, cleaning_time)
       t + cleaning_time
