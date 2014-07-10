@@ -195,9 +195,3 @@ class Ui
     selection
   end
 end
-
-
-
-ui=Ui.new(8,14)
-#ui.init
-ui.runUi
