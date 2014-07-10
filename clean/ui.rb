@@ -157,16 +157,16 @@ class Ui
       puts "------------------------------------"
       print "Come back ".red,a[2]," at ".red,a[0],":",a[1],"\n"
       puts "------------------------------------"
-      gets.chomp
+      
     end
+    gets.chomp
     #puts "\e[H\e[2J"
     runUi
   end
 
   def validation
     v=Validator.new
-    if !v.openCloseValid(self.open_hour,self.close_hour)
-      
+    if !v.openCloseValid(self.open_hour,self.close_hour)      
       puts "Error! You can't open after closing hour!!".red
     elsif !v.pickupValid(self.pick)
       puts "Error! check pickup time".red
