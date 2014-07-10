@@ -9,44 +9,44 @@ class Ui
     self.close_hour=close_h
   end
   
-  def runUi
+  def run_ui
     puts "\e[H\e[2J"
     case menu
     when 1
       puts "\e[H\e[2J"
-      placeOrder
+      place_order
     when 2
       puts "\e[H\e[2J"
-      workTime
+      work_time
     when 3
       puts "\e[H\e[2J"
-      freeTime
+      free_time
     when 0
       puts "\e[H\e[2J"
       exit
     end
   end
   
-  def freeTime
+  def free_time
     print "Free days:"
     $free_days.each {|day, bool|
       print "#{day} ".red unless bool==false
     }
     puts ""
     
-    case free_daysMenu
+    case free_days_menu
     when 1
-      addFreeDay
+      add_free_day
     when 2
-      removeFreeDay
+      remove_free_day
     when 3
-      runUi
+      run_ui
     end
     #puts "\e[H\e[2J"
-    runUi
+    run_ui
   end
   
-  def addFreeDay
+  def add_free_day
     number=1;
     $free_days.each {|day, bool|
       print number,":#{day} ".red
@@ -76,9 +76,9 @@ class Ui
       $free_days["Saturday"]=true
     end
     puts "\e[H\e[2J"
-    freeTime
+    free_time
   end
-  def removeFreeDay
+  def remove_free_day
     number=1;
     $free_days.each {|day, bool|
       print number,":#{day} ".red
@@ -108,9 +108,9 @@ class Ui
       $free_days["Saturday"]=false
     end
     puts "\e[H\e[2J"
-    freeTime
+    free_time
   end
-  def free_daysMenu
+  def free_days_menu
     puts "------------------------------------"
     puts "1. Add free day"
     puts "2. Remove free day"
@@ -125,7 +125,7 @@ class Ui
     selection
   end
   
-  def workTime
+  def work_time
     print "Working program:"
     #puts "\e[H\e[2J"
     print "Open="
@@ -133,10 +133,10 @@ class Ui
     print "Close="
     self.close_hour=gets.chomp.to_i
     #puts "\e[H\e[2J"
-    runUi
+    run_ui
   end
   
-  def placeOrder
+  def place_order
     #puts "\e[H\e[2J"
     print "New Order:"
     
@@ -151,41 +151,41 @@ class Ui
     if self.validation
       o=Order.new
       o.init(self.open_hour,self.close_hour,self.pick)
-      o.getTime
+      o.get_time
       a=o.calculate((Time.new.hour*60+Time.new.min+pick)<close_hour*60)
       
       puts "------------------------------------"
       print "Come back ".red,a[2]," at ".red,a[0],":",a[1],"\n"
       puts "------------------------------------"
-      gets.chomp
+      
     end
+    gets.chomp
     #puts "\e[H\e[2J"
-    runUi
+    run_ui
   end
 
   def validation
     v=Validator.new
-    if !v.openCloseValid(self.open_hour,self.close_hour)
-      
+    if !v.openCloseValid(self.open_hour,self.close_hour)      
       puts "Error! You can't open after closing hour!!".red
     elsif !v.pickupValid(self.pick)
       puts "Error! check pickup time".red
     elsif v.isClosed(self.close_hour,Time.new.hour)
-      puts "Is closed".red
+      puts "Closed".red
     else true
     end
   end
   
   def menu
     puts "\e[H\e[2J"
-    puts "-----RUBY TRIBE'S DRY CLEANING-----"
-    puts "-----------------------------------"
+    puts "-----RUBY TRIBE'S DRY CLEANING-----".blue
+    puts "-----------------------------------".blue
     puts "1. Place order"
     puts "2. Set working program(#{self.open_hour}-#{self.close_hour} now)"
     puts "3. Set free days"
     puts "                "
-    puts "0. Exit"
-    puts "-----------------------------------"
+    puts "0. Exit".green
+    puts "-----------------------------------".blue
     selection=-1
     while (selection<0)or(selection>3) 
       print "Input the command:"
@@ -195,9 +195,3 @@ class Ui
     selection
   end
 end
-
-
-
-ui=Ui.new(8,14)
-#ui.init
-ui.runUi
