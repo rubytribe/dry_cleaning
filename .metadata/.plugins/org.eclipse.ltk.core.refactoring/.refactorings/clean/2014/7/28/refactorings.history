@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move &apos;DryClean.rb&apos; to &apos;clean&apos;" description="Move &apos;DryClean.rb&apos; to &apos;clean&apos;" destination="/clean" element1="/dry_cleaning/DryClean.rb" element2="/dry_cleaning/ui.rb" element3="/dry_cleaning/validation.rb" flags="7" id="org.eclipse.ltk.core.refactoring.move.resources" resources="3" stamp="1404894265832" updateReferences="true"/>
+</session>

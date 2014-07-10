@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="com.aptana.ruby.debug.core.launchConfigurationType">
+<stringAttribute key="com.aptana.ruby.debug.ATTR_PROGRAM_ARGUMENTS" value=""/>
+<stringAttribute key="com.aptana.ruby.debug.ATTR_VM_ARGUMENTS" value=""/>
+<stringAttribute key="com.aptana.ruby.debug.ATTR_WORKING_DIR" value=""/>
+</launchConfiguration>
