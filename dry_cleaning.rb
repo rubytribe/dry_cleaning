@@ -110,12 +110,3 @@ class DryCleaning
   end
   
 end
-
-cleaning = DryCleaning.new
-cleaning.remove_working_day(4)
-cleaning.set_schedule(3,8,17)
-cleaning.set_schedule(5,12,18)
-cleaning.print_schedule
-
-puts
-puts cleaning.pickup_time
