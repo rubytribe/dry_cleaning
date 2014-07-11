@@ -1,11 +1,12 @@
 require "test/unit"
-require_relative "cleanning.rb"
+require_relative "dry_cleaner.rb"
 
 
 class TestDryCleanning < Test::Unit::TestCase
 
   def setup
-    @dc = DryCleanning.new(8,14)
+    free_days = ["tuesday", "saturday", "sunday"]
+    @dc = DryCleanning.new(free_days,8,13)
   end
   
   def test_today
@@ -17,7 +18,7 @@ class TestDryCleanning < Test::Unit::TestCase
   def test_tomorrow
     time = 2*60*60
     tmr = @dc.tomorrow(time).day
-    assert_equal(tmr, 14)
+    assert_equal(tmr, 12)
   end
   
   def test_remaining
@@ -26,10 +27,28 @@ class TestDryCleanning < Test::Unit::TestCase
     assert_boolean(remain != 0)
   end
   
+  def test_current_day
+    day = 1
+    current_day = @dc.current_day(day)
+    assert_equal(current_day, "monday")
+  end
+  
+  def test_free_day
+    day = Time.now
+    free_day = @dc.check_free_day(day)
+    assert_boolean(free_day == true)
+  end
+  
+  def test_next_free_days
+    day = Time.now
+    nr = @dc.nr_next_free_days(day)
+    assert_equal(nr, 2)
+  end
+  
   def test_check_cleanning_hours
     current_time = Time.now
-    hour = @dc.check_cleanning_hours(current_time, 2*60*60).hour
-    assert_equal(hour, 13)
+    day = @dc.check_cleanning_hours(current_time, 2*60*60).day
+    assert_equal(day, 14)
   end
   
 end
