@@ -1,12 +1,12 @@
 class DryCleanning
 
   #getter method
-  attr_reader :start_day, :end_day
+  attr_accessor :start_day, :end_day
   
   #constructor method
-  def initialize
-    @start_day = 8
-    @end_day = 17
+  def initialize(start_day, end_day)
+    @start_day = start_day
+    @end_day = end_day
   end
   
   #dry cleaner's schedule
@@ -26,7 +26,7 @@ class DryCleanning
   end
   
   #get next day
-  def tommorow(cl_time)
+  def tomorrow(cl_time)
     day = 24*60*60
     
     pick = remaining_hours_tomorrow(cl_time)
@@ -59,14 +59,14 @@ class DryCleanning
       pickup_time = today(cl_time)
 
     elsif curr_time.hour + cl_time/60/60 > @end_day
-      pickup_time = tommorow(cl_time)
+      pickup_time = tomorrow(cl_time)
 
     else
       pickup_time = curr_time + cl_time
 
     end  
     
-    return pickup_time.inspect
+    return pickup_time
   end
   
   
