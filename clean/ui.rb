@@ -149,8 +149,8 @@ class Ui
     
 
     if self.validation
-      o=Order.new
-      o.init(self.open_hour,self.close_hour,self.pick)
+      o=Order.new(self.open_hour,self.close_hour,self.pick)
+     # o.init(self.open_hour,self.close_hour,self.pick)
       o.get_time
       a=o.calculate((Time.new.hour*60+Time.new.min+pick)<close_hour*60)
       

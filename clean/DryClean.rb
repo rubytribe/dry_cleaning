@@ -38,7 +38,7 @@ class Order
     end
   end
 
-  def init(open,close,pickup)
+  def initialize(open,close,pickup)
     self.open=open
     self.close=close
     self.pickup=pickup
